@@ -1,0 +1,134 @@
+where 
+
+ada beberapa operator untuk where clause
+
+!= or <> adalah tidak sama dengan
+
+select * from <nama table> WHERE <nama kolom> <> <kondisi>
+
+ex:
+
+where city <> 'london'
+
+
+in adalah menyatakan operator untuk where didalam list
+
+ex:
+where age = 20 or age = 23 or age = 29
+
+bisa juga dengan in:
+where age in (20,23,29);
+
+between adalah menyatakan diantara dua kondisi
+
+ex:
+where age between 20 and 29;
+
+like adalah operator untuk suatu karakter
+
+ex:
+1. misalnya saya ingin mengambil data dari kolom city yang mempuyai value nama kota dengan huruf yang diawali dengan L
+
+where city like '%L'
+
+2. 
+misalnya saya mempunyai tabel email dengan value:
+t@t.com
+j@j.com
+mary.mary.com
+josh.j@dell.com
+sara@abc.com
+
+where email like '%@%'
+
+hasil nya adalah:
+t@t.com
+j@j.com
+josh.j@dell.com
+sara@abc.com
+
+jadi mary.mary.com tidak masuk masuk karena tidak ada karakter @ nya.
+
+3. 
+misalnya ingin memunculkan kebalikannya dengan not like
+
+where email not like '%@%'
+
+maka hasilnya akan menjadi:
+mary.mary.com
+
+_ adalah operator untuk mengambil karakter sebelum dan sesudah
+
+ex:
+where email like '_@_'
+
+saya ingin mengambil satu karakter sebelum dan sesudah karakter @
+
+jadi hasilnya akan menjadi:
+t@t.com
+j@j.com
+
+[] adalah untuk menampilkan list dari karakter
+ex:
+kita mempunyai kolom nama dengan value:
+Tom
+John
+Mary
+Josh
+Sara
+
+kita ingin memunculkan value yang dimulai dengan huruf m, s dan t dan tidak perduli karakter setelahnya:
+
+where name like '[MST]%'
+
+hasilnya akan menjadi:
+Tom
+Mary
+Sara
+
+[^] adalah kebalikan dari []
+
+ex:
+where name like '[^MST]%'
+
+hasilnya akan menjadi:
+John
+Josh
+
+or dan and
+
+saya ingin memunculkan kota yang london atau mumbai yang umurnya lebih besar dari 25
+
+where city = ('london' or city = 'mumbai') and age > 25
+
+order by adalah fuction untuk mengurutkan berdasarkan terkecil atau terbesar. secara default dia akan mengurutkan secara terkecil yaitu asc dan terbesar yaitu desc
+
+ex:
+saya ingin mengurutkan kolom nama dari terbesar dan kolom nama dari terkecil
+
+order by name desc, name asc
+
+top adalah untuk memunculkan teratas dari kolom
+
+ex:
+select top 10 * from <nama table>
+
+akan memunculkan top 10 dari table
+
+atau ingin memunculkan beberapa kolom saja dengan:
+select top 10 <nama kolom> <nama kolom> from <nama table>
+
+select top 10 name, age from tblperson;
+
+
+atau ingin menggunakan persentasi:
+
+select top 1 percent from tblperson;
+
+akan memunculkan 1 persen dari table;
+
+penggabungan top dan order by:
+
+select top 1 * from tblperson order by age desc;
+
+akan memunculkan satu baris yang diurutkan berdarkan umur terbesar dari kolom age

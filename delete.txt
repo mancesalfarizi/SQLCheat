@@ -1,0 +1,154 @@
+data: 10,000 lagu
+
+step 1 : menghapus data dengan delete command
+
+step 2 : melakukan analisis data dari tren musik selama setahun
+
+song
+
+song_id (primary key)
+title
+artist
+album
+year_released
+duration(panjang lagu dalam ukuran second)
+tempo(ukuran kecepatan lagu dalam beat per menit)
+
+loudness(rata-rata kekerasan lagu)
+formulanya adalah 
+loudness < 0
+nilainya adalah negatif
+semakin dekat dengan 0 semakin keras lagunya
+jadi lagu yang memiliki loadness -5 lebih keras daripada -20
+
+--mengetahui berapa row yang dicover dari table ini
+select count(*)
+from song;
+
+--mengetahui kapan mulai dan terakhir tahun dicover dari table ini
+
+select min(year_released), max(year_released)
+from song;
+
+--gunakan distinct pada kolom year_released menghilangkan duplikasi pada kolom tersebut
+select distinct year_released
+from song
+order by year_released;
+
+--ternyata ada satu baris yang memiliki value 0
+
+--berapa baris yang memiliki value 0 pada kolom year_released
+select count(*)
+from song
+where year_released = 0;
+
+--ada sekitar 5320 value yang memiliki value 0
+
+--hapus semua data tersebut
+delete from song
+where year_released = 0;
+
+--cara comment quary biar tidak terbaca
+menggunakan -- dan /*
+ex:
+--delete from song
+--where year_released = 0;
+
+/*delete from song
+where year_released = 0*/
+
+--sebelum menghapus data tersebut sebaiknya kita cek dulu data mana saja yang akan dihapus
+
+select count(*)
+from song
+where year_released = 0;
+
+select *
+from song
+where year_released = 0
+limit = 10;
+
+--setelah itu baru hapus quary menggunakan delete command
+
+--cek kembali menggunakan distinct command pada year_released
+
+select distinct year_released
+from song
+order by year_released;
+
+--formula delete command
+
+DELETE FROM <NAMA TABLE>
+WHERE KONDISI
+
+NOTE:
+delete command berguna untuk menghapus baris bukan kolom
+jika tidak ada where clause akan semua baris akan dihapus
+
+--cek minimum dan maximum value pada kolom tempo
+
+select min(tempo), max(tempo)
+from song;
+
+--pada kolom tempo juga ada value 0 
+
+--itu merupakan value yang salah pada kolom tempo
+
+--cek berapa lagu yang memiliki value 0
+
+select count(*)
+from song
+where tempo = 0;
+
+--cek kembali data yang mau dihapus
+select * 
+from song
+where tempo = 0;
+
+--setelah menghitung dan melihat tempo yang salah lakukan delete command
+
+delete from song
+where tempo = 0;
+
+--seteleh itu cek min dan max tempo value
+
+select min(tempo), max(tempo)
+from song;
+
+--cek min dan max value pada kolom duration
+
+select min(duration), max(duration)
+from song;
+
+--cek min dan max value pada kolom loudness
+select min(loadness), max(loadness)
+from song;
+
+
+--karena value pada kolom loudness harus < 0, harus dicek berapa lagu yang memiliki value > 0
+
+select count(*)
+from song
+where loudness > 0
+
+--terdapat 1 lagu yang memiliki value > 0
+
+--cek lagu apa itu
+select *
+from song
+where loadness > 0
+
+--hapus lagu tersebut
+
+delete from song
+where loadness > 0;
+
+
+--apakah tempo berubah dari waktu kewaktu?
+
+select year_released, round(avg(tempo))
+from song
+group by year_released
+order by year_released;
+
+note: penggunaan round function untuk mengubah value menjadi bilangan bulat

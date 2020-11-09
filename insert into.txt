@@ -1,0 +1,44 @@
+hari ini kita akan membuat database untuk jejaring sosial bernama chitter
+
+ada 3 table 
+-chitter_user--> mengandung following column
+	*user_id(primary key)
+	*username
+	*encrypted_password
+	*email
+	*date_joined
+-post--> mengadung following column 
+	*post_id(primary key)
+	*user_id
+	*post_text
+	*posted_on
+-follower--> mengandung siapa yang follower kepada user tertentu
+	*user_id
+	*follower_id
+	
+
+	
+--memasukkan data kedalam kolom yang sudah dibuat
+
+insert into chitter_user
+	(user_id, username, encrypted_password, email, date_joined)
+values
+	(default, 'fistuser', 'alakkalfkalkfakalkfalk',
+	'supermantap@gmail.com', '2019,-02-25');
+	
+note: pada user_id kolom values nya diberikan default supaya data nya dimasukkan otamatis
+
+--tidak memasukkan semua value semua kolom
+
+insert into chitter_user
+	(username, encrypted_password)
+values
+	('seconduser', 'lakdflakflak'lf');
+	
+--memasukkan banyak value pada satu quary
+
+insert into post
+	(user_id,post_text)
+values
+	(1, 'hello world'),
+	(1, 'hello solar system');

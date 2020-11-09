@@ -1,0 +1,144 @@
+martian_confidential
+
+martian_id
+first_name
+last_name
+base_id
+
+super_id
+salary
+dna_id
+
+--ada dua infomasi yang sangat sensitif yaitu: kolom salary dan dna_id
+
+--dua kolom ini seharusnya tidak dilihat oleh semua orang
+
+--dengan membuat views kita akan menjaga dua kolom ini agar tidak dapat dilihat oleh orang lain
+
+--step pembuatan view:
+
+--1. tulis quary yang hanya ingin dimunculkan
+
+select martian_id, first_name, last_name, base_id, super_id
+from martian_confidential;
+
+--2. tambahkan CREATE VIEW <NAMA TABLE> AS
+
+CREATE VIEW martian_public AS
+select martian_id, first_name, last_name, base_id, super_id
+from martian_confidential;
+
+--maka setelah itu kita telah membuat table virtual bernama martian_public
+
+visitor 
+
+visitor_id
+host_id
+first_name
+last_name
+
+--membuat view semua orang yang di mars 
+
+--pada tugas ini dibutuhkan adalah:
+
+--first_name, last_name, unique_id, martian or visitor
+
+--akan digunakan dua table yaitu martian_confidential dan visitor
+
+select martian_id, first_name, last_name, 'Martian' as status
+from martian_confidential
+	union
+select visitor_id, first_name, last_name, 'Visitor' as status
+from visitor;
+
+--masalah selanjutnya adalah id dari martian dan id dari visitor sama
+
+--maka kita akan meberikan prefic m sebelum id martian dan membuat nama table nya id
+
+--membuat prefic v sebelum id visitor dan membuat nama table nya id juga
+
+--hal ini dapat dilakukan dengan menggunakan CONCAT FUCTION
+
+select CONCAT('m', martian_id) as id, first_name, last_name, 'Martian' as status
+from martian_confidential
+	union
+select CONCAT('v', visitor_id) as id, first_name, last_name, 'Visitor' as status
+from visitor;
+
+--hasil seperti yang kita ingin kan, selanjutnya adalah membuat view nya 
+
+CREATE VIEW people_on_mars AS
+select CONCAT('m', martian_id) as id, first_name, last_name, 'Martian' as status
+from martian_confidential
+	union
+select CONCAT('v', visitor_id) as id, first_name, last_name, 'Visitor' as status
+from visitor;
+
+base
+
+base_id
+base_name
+founded
+
+--base table mengandung informasi dari segala tempat tinggal di mars
+
+
+inventory
+
+base_id
+supply_id
+quantity
+
+--inventory table mengandung informasi barang persediaan dari semua rumah
+
+--ada masalah di inventory table:
+
+--barang yang tidak terstok tidak dimunculkan ditable
+
+--jadi barang yang terstok saja yang dimunculkan
+
+supply
+
+supply_id
+name
+description
+quantity
+
+--supply table mengandung infomasi tentang semua barang yang tersedia persediaan pusat
+
+
+--dari tiga table ini kita mempunyai tugas yaitu:
+
+--membuat view dengan nama base_storage, yang memperlihatkan supply quantity dari setiap tempat tinggal 
+
+select b.base_id, s.supply_id, s.name
+from base as b
+cross join supply as s
+
+note: cross join adalah menghubungkan 1 baris dari table pertama dengan 2 baris dari table kedua
+
+--karena ada 5 base dan 10 supply item maka akan ada 20 baris yang dimunculkan
+
+--barang apa saja yang tersedia dari setiap base
+
+--hal ini dapat dilakukan dengan menggunakan subquary
+
+select quantity from inventory where base_id = b.base_id and supply_id = s.super_id
+
+--masalah terakhir adalah menghilangkan null
+
+coalesce((select quantity from inventory where base_id = b.base_id and supply_id = s.super_id),0)
+
+--jadi hasil quary akhirnya adalah:
+
+CREATE VIEW base_storage AS
+select b.base_id, s.supply_id, s.name,
+	coalesce((select quantity from inventory where base_id = b.base_id and supply_id = s.super_id),0) as quantity
+from base as b
+cross join supply as s
+
+
+
+
+
+

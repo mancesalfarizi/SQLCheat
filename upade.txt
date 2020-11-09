@@ -1,0 +1,46 @@
+secret_user
+
+user_id
+first_name
+last_name
+code_name
+country
+organization
+salary
+knows_kung_fu
+
+--ganti value pada kolom first_name dari jimmy menjadi james
+
+update secret_user
+set first_name = 'james'
+where user_id = 1;
+
+--memberikan value pada kolom code_name dan menganti pada kolom salary pada jack ryan
+
+update secret_user
+set code_name = 'Neo 2.0', salary = 115000
+where first_name = 'jack' and last_name = 'Ryan';
+
+--menganti value salary pada semua row yang memiliki value m16 menjadi 115000
+
+update secret_user
+set salary = '115000
+where organization = 'M16';
+
+--mengganti value pada kolom knows_kung_fu menjadi true semua
+
+update secret_user
+set knows_kung_fu = true
+where user_id in (5, 7, 8);
+
+note: penggunaan in ini berguna untuk mengubah beberapa value yang ada dilist
+
+--memberikan tambahan 10% pada kolom salary
+
+update secret_user
+set salary = 1.1 * salary;
+
+--untuk mengetahui rata-rata salary
+
+select sum(salary)
+from secret_user;

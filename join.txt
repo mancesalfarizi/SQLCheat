@@ -1,0 +1,160 @@
+martian 
+merupakan data semua orang yang ada dimars
+
+martian_id
+first_name
+last_name
+base_id ( mengandung value dimana warga mars tinggal, kerja dan bermain)
+super_id ( mengandung value kepada siapa suatu harus melapor) kalau super_id = null maka ini merupakan ketua dari base tersebut
+pada martian table ada john carter yang belum terdaftar dan  
+
+supply_id(id kepada siapa orang mars melakukan laporan)
+
+base 
+merupakan data yang menyakut tentang mars
+
+base_id
+base_name
+founded
+
+pada base table ada olympus mons spa & casino yang masih comming soon
+
+note: base_id.martian = base_id.base
+
+visitor 
+merupakan data yang menyakut tentang orang yang mengunjungi mars
+
+visitor_id
+host_id( mengandung value kepada siapa mereka menumpang tinggal)
+first_name
+last_name
+
+
+
+
+
+inventory 
+merupakan data dari kebutuhan orang-orang dimars. melacak pasokan dari setiap base
+
+base_id
+supply_id
+quantity
+
+supply 
+merupakan data dari distribusi pusat. melacak apa saja yang tersedia di penyimpanan mars pusat
+
+supply_id
+name
+description
+quantity
+
+--buat laporan nama orang mars dan tempat tinggal mereka di mars
+
+--pada matian table ada first_name dan last_name dan pada base table ada base_name
+
+--jadi kita dapat melakukan join terhadap 2 table ini untuk mendapatkan data tersebut
+
+select first_name, last_name, base_name 
+from martian (left table)
+inner join base (right table)
+on martian.base_id = base.base_id;
+
+formula:
+select column1, column2, column3
+from martian
+____join base
+on martian.base_id=base.base_id
+where condition(1)
+order by value
+
+ada 4 jenis join:
+1. inner join
+pada join ini akan mengambil data yang memiliki kecocokan dari kedua table
+
+2. left join
+pada join ini akan mengambil data yang memiliki kecocokkan dari kedua table dan tidak kecocokan pada left table
+
+3. right join
+pada join ini akan mengambil data yang memiliki kecocokkan dari kedua table dan tidak kecocokan pada right table
+
+4. full join
+gabungan dari left join dan right join
+
+
+--mengambil martian_id, base_id, dan base_name
+
+select m.martian_id, b.base_id, b.base_name
+from martian as m
+inner join base as b
+on m.base_id = b.base_id;
+
+--munculkan nama dari setiap visitor dan dimana dia menginap
+
+--menggunakan 2 table yaitu: visitor dan martian table
+
+--join nya menggunakan visitor.host_id = martian.martian_id
+
+select v.first_name as visitor_fn, v.last_name as visitor_ln,
+		m.first_name as martian_fn, m.last_name as martian_ln
+from visitor as v
+left join martian as m
+on v.host_id = m.martian_id
+
+note: penggunaan left join karena ingin memunculkan semua nama visitor. visitor yang punya tempat menginap ataupun tidak
+
+--memunculkan list dari setiap warga mars kepada siapa dia melakukan laporan
+
+--melakukan hubungan antara super_id dan martian_id sehingga menggunakan self join 
+
+note: self join adalah melakukan koneksi dari 2 row dalam satu table
+
+select m.first_name as fn, m.last_name as ln,
+	   s.first_name as super_fn, s.last_name as super_ln
+from martian as m
+left join martian as s
+on m.super_id = s.martian_id
+order by martian_id;
+
+note: penggunaan left join agar semua orang mars muncul 
+
+--base report
+--laporan untuk base 1
+--untuk mengetahui supply pada base 1
+select *  from inventory where base_id = 1;
+
+--karena kita ingin mengetahui nama dari setiap supply item dan ingin mengetahui item apa saja yang tidak ada pada base 1
+
+--jadi kita kan melakukan join dari inventory.base_id = 1 dengan supply table;
+
+--jadi kita harus membuat new select terhadap base_id = 1
+
+select *
+from (select *  from inventory where base_id = 1) as i 
+
+note: ini merupakan contoh dari subquery 
+
+--menggunakan right join terhadap table supply dan inventory table yang hanya dipilih base_id = 1
+
+selet s.supply_id, i.quantity, s.name, s.description
+from (select * from inventory where base_id = 1) as i
+right join  supply as s
+on i.supply_id = s.supply_id
+order by s.supply_id;
+
+note: 
+karena kita ingin mengetahui semua supply_id dari supply table maka kita akan melakukan select s.supply_id
+karena kita ingin mengetahui semua jumlah quantity maka juga select i.quantity
+terakhir select s.name dan s.description
+
+--tidak ada tempat tinggal report
+
+--memunculkan list visitor yang tidak memiliki host
+
+select v.first_name as visitor_fn, v.last_name as visitor_ln
+		m.first_name as martian_fn, m.last_name as martian_ln
+from visitor as v
+full join matian as m
+on v.host_id = m.martian_id
+where m.martian_id is null or v.visitor_id is null; 
+
+note: penggunaan full join karena ingin mengetahui visitor tanpa host pada right table dan martian yang tidak memiliki row matching pada left table

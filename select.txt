@@ -1,0 +1,133 @@
+earthquake
+
+earthquake_id (primary_key)
+occurred_on
+latitude
+longitude
+depth
+magnitude
+calculation_method
+netword_id
+place
+cause
+
+earthquake_id merupakan primary_key
+
+occurred_on(terjadi)
+latitude(garis lintang)
+longitude (garis bujur)
+depth(kedalaman)
+merupakan kolom yang menggambarkan kapan dan dimana terjadi nya gempa dengan kedalaman yang dihitung berdasarkan kilometer
+
+magnitude(besarnya gempa)
+
+calculation_method merupakan rumus untuk menghitung besarnya gempa
+
+netword_id merupakan altenatif key dari data
+
+place merupakan tempat terjadinya gempa
+
+cause merupakan kolom yang mengambarkan penyebab terjadi gempa
+
+
+--cara melihat semua data
+
+select * FROM earthquake;
+
+--cara menghitung semua baris yang ada
+
+select COUNT(*) from earthquake;
+
+--cara melihat kolom tertentu
+
+select magnitude, place, occurred_on from earthquake;
+
+--WHERE (meliha kolom dengan kondisi tertentu)
+
+select * 
+from earthquake
+where occurred_on >= '2020-01-01';
+
+quary ini akan menghasilkan data di tanggal 1 januari 2020;
+
+--gempa terbesar di 2010
+
+select * (memilih semua kolom)
+from earthquake (tabel yang dipilih
+where occurred_on >= '2020-01-01' and occurred_on <= '2020-12-31' (kondisi untuk baris)
+order by magnitude desc (setelah memilih tabel dan kolom dapat mengurutkan berdasarkan kolom tertentu)
+limit 1;(memberikan limit data yang diperlihatkan)
+
+dari kode ini akan dihasilkan cuma satu kolom 
+
+--min dan max
+
+-cara melihat kisaraan waktu yang di cover dari table tersebut
+
+select min(occurred_on), max(occurred_on)
+from earthquake;
+
+-cara melihat kisaran besar gempa yang dicover dari table tersebut
+
+select min(magnitude), max(magnitude)
+from earthquake;
+
+--distinct(menghapus duplikasi dari baris)
+
+-cara melihat penyebab terjadi gempa yang dicover dari table ini dan menghapus duplikasi
+
+select distinct cause
+from earthquake;
+
+
+-berapa jumlah gempa yang disebabkan oleh gempa alami
+
+select count(*)
+from earthquake
+where cause = 'earthquake';
+
+-berapa jumlah gempa yang disebabkan oleh ledakan nuklir
+
+select count(*)
+from earthquake
+where cause = 'nuclear explosion';
+
+-berapa jumlah gempa yang disebabkan oleh ledakan
+
+select count(*)
+from earthquake
+where cause = 'explosion';
+
+-melihat penyebab gempa dari ledakan 
+
+select *
+from earthquake
+where cause = 'explosion';
+
+-mencari penyebab gempa dari terbaru dari ledakan
+
+select place, magnitude, occurred_on
+from earthquake
+where cause = 'nuclear explosion'
+order by desc
+limit 1;
+
+-mencari 10 terbesar gempa dari 1969 - 2018
+
+select place, magnitude, occurred_on
+from earthquake
+order by magnitude desc
+limit 10;
+
+
+-cara mencari gempa susulan 
+dengan cara mencari kata yang mengandung honshu dan japan pada kolom place dan pada kolom occurred_on dipilih kondisi seminggu setelah gempa
+
+select count(*)
+from earthquake
+where place like '%honshu%japan%'
+	and occurred_on between '2011-03-11' and '2011-03-18';
+
+
+
+

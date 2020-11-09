@@ -1,0 +1,24 @@
+person 
+
+person_id(primary key)
+first_name
+last_name
+birthday
+
+--cara bikin index
+
+create index <nama index>
+on <nama table> (<nama table>);
+
+ex:
+create index person_first_name_idx
+on person(first_name);
+
+--index juga dapat dilakukan lebih dari satu kolom
+
+create index <nama index>
+on <nama table>(<nama kolom>, <nama kolom>, <nama kolom>);
+
+ex:
+create index person_first_name_last_name_idx
+on person(first_name, last_name);
